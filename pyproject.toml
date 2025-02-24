@@ -1,0 +1,22 @@
+[project]
+name = "baccarat"
+version = "0.1.0"
+description = "Monte Carlo simulation framework in Python"
+readme = "README.md"
+authors = [
+    { name = "Mathias Alexander", email = "mathias@mathias-alexander.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pytest>=8.3.4",
+    "ruff>=0.9.7",
+]
