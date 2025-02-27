@@ -7,18 +7,11 @@ from .params import SimulationParams, Param
 
 
 class Simulator(ABC):
-    def __init__(self, num_samples: int, params: SimulationParams | Iterable[Param] | None = None, max_workers: int | None = None):
+    def __init__(self, num_samples: int, max_workers: int | None = None):
         self.num_samples = num_samples
-        self.params = params if isinstance(params, SimulationParams) else SimulationParams(params)
         self.max_workers = max_workers or multiprocessing.cpu_count()  # Assume simulation is CPU-bound
         self.results: list[Any] = []
         
-    def __getattr__(self, name: str) -> Any:
-        # Delegate parameter access to SimulationParams
-        if hasattr(self.params, name):
-            return getattr(self.params, name)
-        raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
-    
     @abstractmethod
     def simulation(self):
         """Logic for a single simulation. The return value will be appended to the results list."""

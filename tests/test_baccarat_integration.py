@@ -4,6 +4,11 @@ from baccarat import Simulator, UniformParam, StaticParam
 
 def test_approximate_pi():
     class PiSimulator(Simulator):
+        radius = 1
+        x = UniformParam(-radius, radius)
+        y = UniformParam(-radius, radius)
+        r = StaticParam(radius)
+        
         def simulation(self):
             # Use assignments since attribute access will generate the random value
             x, y, r = self.x, self.y, self.r
@@ -13,10 +18,5 @@ def test_approximate_pi():
         def compile_results(self):
             return 4 * len([res for res in self.results if res]) / len(self.results)
     
-    params = [
-        UniformParam('x', -1, 1),
-        UniformParam('y', -1, 1),
-        StaticParam('r', 1),
-    ]
-    approx_pi = PiSimulator(1_000_000, params).run()
+    approx_pi = PiSimulator(1_000_000).run()
     assert pytest.approx(3.14159, rel=0.01) == approx_pi
