@@ -1,16 +1,14 @@
 import multiprocessing
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Iterable
-
-from .params import SimulationParams, Param
+from typing import Any
 
 
 class Simulator(ABC):
     def __init__(self, num_samples: int, max_workers: int | None = None):
         self.num_samples = num_samples
         self.max_workers = max_workers or multiprocessing.cpu_count()  # Assume simulation is CPU-bound
-        self.results: list[Any] = []
+        self.results: list = []
         
     @abstractmethod
     def simulation(self):
