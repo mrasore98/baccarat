@@ -1,0 +1,7 @@
+site_name: Baccarat
+theme: dracula
+nav:
+    - Home: index.md
+    - Quick Start: quickstart.md
+    - Tutorials:
+      - Tutorial 1 - Approximating Pi: tutorials/example1.md
