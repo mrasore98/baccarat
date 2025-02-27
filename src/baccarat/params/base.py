@@ -2,8 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Any  
 
 class Param(ABC):
-    def __init__(self, name: str):
-        self.name = name
+        
+    def __get__(self, instance, owner):
+        # Generate a new value each time the parameter is accessed
+        return self.generate()
 
     @abstractmethod
     def generate(self) -> Any:
