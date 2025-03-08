@@ -12,8 +12,8 @@ class GammaRaySim(Simulator):
     scattering_angle_outcome = UniformParam(0, 1)
     energy_smear_factor = GaussianParam(0, 1)
 
-    def __init__(self, num_samples: int, max_workers: int | None = None):
-        super().__init__(num_samples, max_workers)
+    def __init__(self, num_samples: int):
+        super().__init__(num_samples)
         self.energy_mev = np.empty(num_samples)
 
     def simulation(self):

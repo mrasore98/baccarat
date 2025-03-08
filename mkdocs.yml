@@ -5,3 +5,12 @@ nav:
     - Quick Start: quickstart.md
     - Tutorials:
       - Tutorial 1 - Approximating Pi: tutorials/example1.md
+    - API Reference:
+      - Overview: api/index.md
+      - Simulator: api/simulator.md
+      - Parameters:
+        - Overview: api/params/index.md
+        - Base Parameter: api/params/base.md
+        - Gaussian Parameter: api/params/gaussian.md
+        - Uniform Parameter: api/params/uniform.md
+        - Static Parameter: api/params/static.md

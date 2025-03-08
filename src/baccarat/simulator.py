@@ -1,13 +1,11 @@
-import multiprocessing
 from abc import ABC, abstractmethod
 from typing import Any
 
 import numpy as np
 
 class Simulator(ABC):
-    def __init__(self, num_samples: int, max_workers: int | None = None):
+    def __init__(self, num_samples: int):
         self.num_samples = num_samples
-        self.max_workers = max_workers or multiprocessing.cpu_count()  # Assume simulation is CPU-bound
         self.results: np.ndarray = np.empty(num_samples)
         self.rng = np.random.default_rng()
         
