@@ -1,14 +1,15 @@
 import multiprocessing
 from abc import ABC, abstractmethod
-from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
+import numpy as np
 
 class Simulator(ABC):
     def __init__(self, num_samples: int, max_workers: int | None = None):
         self.num_samples = num_samples
         self.max_workers = max_workers or multiprocessing.cpu_count()  # Assume simulation is CPU-bound
-        self.results: list = []
+        self.results: np.ndarray = np.empty(num_samples)
+        self.rng = np.random.default_rng()
         
     @abstractmethod
     def simulation(self):
@@ -26,12 +27,6 @@ class Simulator(ABC):
     
     def run(self):
         """Main entry point to execute the simulation."""
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            self.results = list(executor.map(self._simulation_wrapper, range(self.num_samples)))
+        self.results = self.simulation()
         return self.compile_results()
-        
-    def _simulation_wrapper(self, _):
-        """Helper for a compatible interface with mapping in the ThreadPoolExecutor of `run`."""
-        return self.simulation()
-    
     
