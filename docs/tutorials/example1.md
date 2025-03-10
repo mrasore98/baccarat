@@ -33,9 +33,9 @@ Since `Simulator` is an abstract base class, you need to create a subclass that 
 for the abstract method `simulation`. Let's call this class `PiSimulator`. When defining the class, we'll also define the parameters used in the simulation.
 
 To define the parameters, we'll add class attributes that are concrete instances of the the `Param` class. 
-These concrete instances are actually decorators that also define a custom `generate` method. 
-Accessing a parameter attribute on `PiSimulator` will return the value of that parameter's `generate` method. 
-Since this will typically be a random value, it is recommended to *assign values at the beginning of the `simulation` method*.
+These concrete instances are actually descriptors that define a custom `generate` method. 
+Accessing a parameter attribute on `PiSimulator` will return the value of that parameter's `generate` method as a NumPy array. 
+Since these are NumPy arrays containing all the random values for the simulation at once, it is recommended to *assign them to variables at the beginning of the `simulation` method* for clarity and to enable vectorized operations.
 
 ```python
 from baccarat import Simulator
@@ -56,14 +56,13 @@ class PiSimulator(Simulator):
 
 ```
 
-The return value of the `simulation` method is appended to a list: `PiSimulator.results`. By default, this list is returned when the simulation completes,
-at the end of the `run` method.
+The return value of the `simulation` method is stored in a NumPy array: `PiSimulator.results`. This array contains the results from all simulation samples. By default, this array is returned when the simulation completes, at the end of the `run` method.
 
 ## Step 4: Implementing the `compile_results` Method
 
-Returning a list of results is all well and good, but if we're using the simulation to approximate pi, it seems like this would fall short of our goal 
+Returning an array of results is all well and good, but if we're using the simulation to approximate pi, it seems like this would fall short of our goal 
 and leave us with more work to do! Luckily, we can specify a custom implementation of the `compile_results` method to do some postprocessing to modify 
-the return value appropriately.
+the return value appropriately. With vectorized operations, we can efficiently process all the simulation results at once.
 
 ```python
 from baccarat import Simulator, UniformParam, StaticParam
@@ -76,10 +75,11 @@ class PiSimulator(Simulator):
     r = StaticParam(radius)
     
     def simulation(self):
-        """This is where we implement the logic for a single iteration of the simulation."""
-        # Get values from the parameters of the simulator
+        """This is where we implement the logic for the simulation.
+           The vectorized implementation processes all samples at once."""
+        # Get arrays of values from the parameters of the simulator
         x, y, r = self.x, self.y, self.r
-        # Check if point falls inside the circle
+        # Check if points fall inside the circle (returns boolean array)
         return x**2 + y**2 <= r**2
     
     def compile_results(self):
@@ -100,3 +100,5 @@ if __name__ == "__main__":
 
 In a handful of lines of code, we have a complete implementation of a Monte Carlo simulation to approximate the value of pi!
 The `baccarat` interface allowed us to separate the concerns of simulation logic and postprocessing and build our simulation incrementally.
+
+The implementation takes advantage of NumPy's vectorized operations to efficiently process all simulation samples at once. When parameters are accessed (like `self.x`), they return NumPy arrays containing all the random values needed for the simulation. This vectorized approach provides substantial performance benefits compared to processing each sample individually in a loop.

@@ -1,5 +1,5 @@
 [project]
-name = "baccarat"
+name = "baccarat_sim"
 version = "0.1.0"
 description = "Monte Carlo simulation framework in Python"
 readme = "README.md"
@@ -10,6 +10,10 @@ requires-python = ">=3.13"
 dependencies = [
     "numpy>=2.2.3",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/baccarat"]
+
 
 [build-system]
 requires = ["hatchling"]

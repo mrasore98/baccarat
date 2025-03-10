@@ -14,7 +14,7 @@ The goal of baccarat is to provide a simple and intuitive interface for building
 To get started with baccarat, you can install it using pip (or uv or poetry or your package manager of choice):
 
 ```bash
-pip install baccarat
+pip install baccarat_sim
 ```
 
 ### Usage
@@ -46,13 +46,14 @@ approx_pi = PiSimulator(1_000_000).run()
 
 Notes: 
 1. All user simulations start with a class that inherits from `Simulator` and implements the `simulation` method.
-    1. The `simulation` method defines the logic for a single iteration of the simulation. The return value will be appended to a list of results on the class instance.
-    1. Optionally, the `compile_results` method can be implemented to process the results of the simulation once all iterations are complete.
+    1. The `simulation` method defines the vectorized logic for the simulation. It should return a NumPy array of results.
+    1. Optionally, the `compile_results` method can be implemented to process the results array once the simulation is complete.
 1. Parameters are defined as class attributes.
     1. Parameters can be either static or dynamic. Static parameters are fixed values, while dynamic parameters are generated randomly according to a distribution.
     1. Distributions are specified using the concrete implementations of the `Param` class, such as `UniformParam` and `GaussianParam`.
-    1. Custom distributions can be created by subclassing the `Param` class and implementing the `generate` method.
-1. The number of iterations used in the simulation are specified when creating an instance of the `Simulator` subclass.
+    1. When accessed, parameters return NumPy arrays containing the random values, enabling vectorized operations.
+    1. Custom distributions can be created by subclassing the `Param` class and implementing the `generate` method to return a NumPy array.
+1. The number of samples used in the simulation are specified when creating an instance of the `Simulator` subclass.
 
 ## Examples
 
