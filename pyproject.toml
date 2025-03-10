@@ -7,7 +7,9 @@ authors = [
     { name = "Mathias Alexander", email = "mathias@mathias-alexander.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "numpy>=2.2.3",
+]
 
 [build-system]
 requires = ["hatchling"]
