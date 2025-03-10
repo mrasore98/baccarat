@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-        <title>Tutorials - Baccarat</title>
+        <title>Overview - Baccarat</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,7 +90,7 @@
                     <ul class="mb-5 drac-list drac-list-none">
                             
     <li class="drac-box-ternary">
-        <a href="example1/"
+        <a href="../tutorials/example1/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Tutorial 1 - Approximating Pi
@@ -101,7 +101,7 @@
             </li>
             <li class="drac-box">
                 <a href=".."
-                    class="
+                    class=" active 
                     drac-anchor btn-toggle d-inline-flex align-items-center border-0 drac-text-purple--hover collapsed"
                     data-bs-toggle="collapse" data-bs-target="#api-reference-collapse" aria-expanded="false">
                     API Reference
@@ -110,15 +110,15 @@
                     <ul class="mb-5 drac-list drac-list-none">
                             
     <li class="drac-box-ternary">
-        <a href="../api/"
-            class="
+        <a href="./"
+            class=" active 
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Overview
         </a>
     </li>
                             
     <li class="drac-box-ternary">
-        <a href="../api/simulator/"
+        <a href="simulator/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Simulator
@@ -136,7 +136,7 @@
             <ul class="mb-5 drac-list drac-list-none">
                     
     <li class="drac-box-ternary">
-        <a href="../api/params/"
+        <a href="params/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Overview
@@ -144,7 +144,7 @@
     </li>
                     
     <li class="drac-box-ternary">
-        <a href="../api/params/base/"
+        <a href="params/base/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Base Parameter
@@ -152,7 +152,7 @@
     </li>
                     
     <li class="drac-box-ternary">
-        <a href="../api/params/gaussian/"
+        <a href="params/gaussian/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Gaussian Parameter
@@ -160,7 +160,7 @@
     </li>
                     
     <li class="drac-box-ternary">
-        <a href="../api/params/uniform/"
+        <a href="params/uniform/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Uniform Parameter
@@ -168,7 +168,7 @@
     </li>
                     
     <li class="drac-box-ternary">
-        <a href="../api/params/static/"
+        <a href="params/static/"
             class="
             drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
             Static Parameter
@@ -205,6 +205,22 @@
                     <!-- block preview -->
                     <li class="nav-item">
                             
+        <div class="container">
+            <div class="row row-preview">
+                <div class="col">
+                    <a href="../tutorials/example1/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="simulator/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover" style="padding-left: 3%;">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
                     </li>
                     <!--  endblock -->
 
@@ -235,9 +251,23 @@
             <!-- block content -->
                 <section class="p-md-5 section-content">
     <article>
-        <p><h1 id="tutorials">Tutorials</h1>
+        <p><h1 id="api-reference">API Reference</h1>
+<p>This section provides detailed documentation for the Baccarat API.</p>
+<h2 id="overview">Overview</h2>
+<p>Baccarat is a framework for running Monte Carlo simulations using NumPy. It provides:</p>
 <ul>
-<li><a href="example1/">Tutorial 1 - Approximating Pi</a></li>
+<li>A base <code>Simulator</code> class for implementing custom simulations</li>
+<li>Parameter descriptors that generate random values according to specific distributions</li>
+<li>Vectorized operations for high performance</li>
+</ul>
+<h2 id="module-structure">Module Structure</h2>
+<ul>
+<li><a href="simulator/"><code>simulator</code></a>: Contains the <code>Simulator</code> base class</li>
+<li><a href="params/"><code>params</code></a>: Contains parameter descriptor classes for simulations</li>
+<li><a href="params/base/"><code>params.base</code></a>: Base parameter class</li>
+<li><a href="params/gaussian/"><code>params.gaussian</code></a>: Gaussian distribution parameters</li>
+<li><a href="params/uniform/"><code>params.uniform</code></a>: Uniform distribution parameters</li>
+<li><a href="params/static/"><code>params.static</code></a>: Static (fixed) parameters</li>
 </ul></p>
     </article>
 </section>

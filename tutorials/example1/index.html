@@ -99,6 +99,87 @@
                     </ul>
                 </div>
             </li>
+            <li class="drac-box">
+                <a href="../.."
+                    class="
+                    drac-anchor btn-toggle d-inline-flex align-items-center border-0 drac-text-purple--hover collapsed"
+                    data-bs-toggle="collapse" data-bs-target="#api-reference-collapse" aria-expanded="false">
+                    API Reference
+                </a>
+                <div class="collapse" id="api-reference-collapse">
+                    <ul class="mb-5 drac-list drac-list-none">
+                            
+    <li class="drac-box-ternary">
+        <a href="../../api/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Overview
+        </a>
+    </li>
+                            
+    <li class="drac-box-ternary">
+        <a href="../../api/simulator/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Simulator
+        </a>
+    </li>
+                            
+    <li class="drac-box-ternary">
+        <a href="#" class="
+            drac-anchor-secondary btn-toggle d-inline-flex align-items-center border-0 drac-text-purple--hover collapsed"
+            data-bs-toggle="collapse" data-bs-target="#parameters-collapse" aria-expanded="false">
+            Parameters
+        </a>
+
+        <div class="collapse" id="parameters-collapse">
+            <ul class="mb-5 drac-list drac-list-none">
+                    
+    <li class="drac-box-ternary">
+        <a href="../../api/params/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Overview
+        </a>
+    </li>
+                    
+    <li class="drac-box-ternary">
+        <a href="../../api/params/base/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Base Parameter
+        </a>
+    </li>
+                    
+    <li class="drac-box-ternary">
+        <a href="../../api/params/gaussian/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Gaussian Parameter
+        </a>
+    </li>
+                    
+    <li class="drac-box-ternary">
+        <a href="../../api/params/uniform/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Uniform Parameter
+        </a>
+    </li>
+                    
+    <li class="drac-box-ternary">
+        <a href="../../api/params/static/"
+            class="
+            drac-anchor d-inline-flex align-items-center border-0 drac-text-purple--hover">
+            Static Parameter
+        </a>
+    </li>
+            </ul>
+        </div>
+    </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
         <!-- endblock -->
     </div>
@@ -133,8 +214,8 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a 
-                        class="btn-preview drac-btn drac-text-white--hover disabled" style="padding-left: 3%;">
+                    <a href="../../api/"
+                        class="btn-preview drac-btn drac-btn-outline drac-text-white drac-text-cyan-green--hover" style="padding-left: 3%;">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </div>
@@ -192,9 +273,9 @@ but only one is an abstract method that you need to implement in your own simula
 <p>Since <code>Simulator</code> is an abstract base class, you need to create a subclass that inherits from <code>Simulator</code> where you will provide the implementation
 for the abstract method <code>simulation</code>. Let's call this class <code>PiSimulator</code>. When defining the class, we'll also define the parameters used in the simulation.</p>
 <p>To define the parameters, we'll add class attributes that are concrete instances of the the <code>Param</code> class. 
-These concrete instances are actually decorators that also define a custom <code>generate</code> method. 
-Accessing a parameter attribute on <code>PiSimulator</code> will return the value of that parameter's <code>generate</code> method. 
-Since this will typically be a random value, it is recommended to <em>assign values at the beginning of the <code>simulation</code> method</em>.</p>
+These concrete instances are actually descriptors that define a custom <code>generate</code> method. 
+Accessing a parameter attribute on <code>PiSimulator</code> will return the value of that parameter's <code>generate</code> method as a NumPy array. 
+Since these are NumPy arrays containing all the random values for the simulation at once, it is recommended to <em>assign them to variables at the beginning of the <code>simulation</code> method</em> for clarity and to enable vectorized operations.</p>
 <pre><code class="language-python">from baccarat import Simulator
 
 class PiSimulator(Simulator):
@@ -212,12 +293,11 @@ class PiSimulator(Simulator):
         return x**2 + y**2 &lt;= r**2
 
 </code></pre>
-<p>The return value of the <code>simulation</code> method is appended to a list: <code>PiSimulator.results</code>. By default, this list is returned when the simulation completes,
-at the end of the <code>run</code> method.</p>
+<p>The return value of the <code>simulation</code> method is stored in a NumPy array: <code>PiSimulator.results</code>. This array contains the results from all simulation samples. By default, this array is returned when the simulation completes, at the end of the <code>run</code> method.</p>
 <h2 id="step-4-implementing-the-compile_results-method">Step 4: Implementing the <code>compile_results</code> Method</h2>
-<p>Returning a list of results is all well and good, but if we're using the simulation to approximate pi, it seems like this would fall short of our goal 
+<p>Returning an array of results is all well and good, but if we're using the simulation to approximate pi, it seems like this would fall short of our goal 
 and leave us with more work to do! Luckily, we can specify a custom implementation of the <code>compile_results</code> method to do some postprocessing to modify 
-the return value appropriately.</p>
+the return value appropriately. With vectorized operations, we can efficiently process all the simulation results at once.</p>
 <pre><code class="language-python">from baccarat import Simulator, UniformParam, StaticParam
 
 class PiSimulator(Simulator):
@@ -228,10 +308,11 @@ class PiSimulator(Simulator):
     r = StaticParam(radius)
 
     def simulation(self):
-        &quot;&quot;&quot;This is where we implement the logic for a single iteration of the simulation.&quot;&quot;&quot;
-        # Get values from the parameters of the simulator
+        &quot;&quot;&quot;This is where we implement the logic for the simulation.
+           The vectorized implementation processes all samples at once.&quot;&quot;&quot;
+        # Get arrays of values from the parameters of the simulator
         x, y, r = self.x, self.y, self.r
-        # Check if point falls inside the circle
+        # Check if points fall inside the circle (returns boolean array)
         return x**2 + y**2 &lt;= r**2
 
     def compile_results(self):
@@ -249,7 +330,8 @@ if __name__ == &quot;__main__&quot;:
 </code></pre>
 <h2 id="conclusion">Conclusion</h2>
 <p>In a handful of lines of code, we have a complete implementation of a Monte Carlo simulation to approximate the value of pi!
-The <code>baccarat</code> interface allowed us to separate the concerns of simulation logic and postprocessing and build our simulation incrementally.</p></p>
+The <code>baccarat</code> interface allowed us to separate the concerns of simulation logic and postprocessing and build our simulation incrementally.</p>
+<p>The implementation takes advantage of NumPy's vectorized operations to efficiently process all simulation samples at once. When parameters are accessed (like <code>self.x</code>), they return NumPy arrays containing all the random values needed for the simulation. This vectorized approach provides substantial performance benefits compared to processing each sample individually in a loop.</p></p>
     </article>
 </section>
             <!-- endblock -->
